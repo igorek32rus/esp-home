@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#333333">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>%SITE_TITLE%</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="header">
+      <a class="logo" href="/">
+        <div class="logo_img"></div>
+        <div class="logo_text">
+          %SITE_TITLE%
+        </div>
+      </a>
+      <div class="menu">
+        <a href="/settings">
+          <div class="settings_button"></div>
+        </a>
+      </div>
+    </div>
+    <div class="content">
+      <div class="settings">
+        <!--
+        <div class="message_box info">
+          <div class="message_img info"></div>
+          <div class="text">Настройки успешно сохранены!</div>
+        </div>
+
+
+
+        <div class="message_box error">
+          <div class="message_img error"></div>
+          <div class="text">Ошибка! Пароль точки доступа не может быть пустым.</div>
+        </div>
+        -->
+
+        <div class="set_up">
+          <h1>Статус</h1>
+          <div class="line"></div>
+          <table>
+            <tr>
+              <td>Версия ПО: <span class="param">%VERSION% <!--(<a href="#">обновить</a> на <span class="tooltip" data-tooltip="Обновление 0.3.1&#13;&#10;&#13;&#10;Добавлено:&#13;&#10;&#149; Добавлена возможность 1&#13;&#10;&#149; Добавлена возможность 2&#13;&#10;&#149; Добавлена возможность 3&#13;&#10;&#13;&#10;Изменено:&#13;&#10;&#149; Изменение в управлении 1&#13;&#10;&#149; Изменен пункт 2">0.3.1</span>)</span>--></td>
+              <!-- <td>Соединие с точкой доступа: <span class="param ok">Установлено</span></td> -->
+              <td>Соединие с точкой доступа: <span class="param %STYLE_CON_WIFI%">%STATUS_CON_WIFI%</span></td>
+            </tr>
+            <tr>
+              <td>IP в сети: <span class="param">%WIFI_STA_IP%</span></td>
+              <td>MAC-адрес: <span class="param">%MAC_ADDRESS%</span></td>
+            </tr>
+            <tr>
+              <!-- <td>Точка доступа ESP: <span class="param info">Не активна</span></td> -->
+              <!-- <td>Служба mDNS: <span class="param error">Ошибка</span></td> -->
+              <td>IP точки доступа ESP: <span class="param">%WIFI_AP_IP%</span></td>
+              <td>Служба mDNS: <span class="param %STYLE_MDNS%">%STATUS_MDNS%</span></td>
+            </tr>
+            <tr>
+              <!-- <td>HTTP-сервер: <span class="param ok">Запущен</span></td> -->
+              <td>HTTP-сервер: <span class="param %STYLE_HTTP%">%STATUS_HTTP%</span></td>
+              <td>Время работы: <span class="param">%UPTIME%</span></td>
+            </tr>
+          </table>
+        </div>
+
+        <form action="/settings" method="post">
+          <div class="set_up">
+            <h1>Wi-Fi точка доступа</h1>
+            <div class="line"></div>
+            <table>
+              <tr>
+                <td style="text-align: right;">SSID:</td>
+                <td><input type="text" value="%WIFI_STA_SSID%" name="wifi_sta_ssid"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Пароль:</td>
+                <td><input type="password" value="%WIFI_STA_PASS%" name="wifi_sta_pass"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="set_up">
+            <h1>ESP как точка доступа</h1>
+            <div class="line"></div>
+            <table>
+              <tr>
+                <td style="text-align: right;">SSID:</td>
+                <td><input type="text" value="%WIFI_AP_SSID%" name="wifi_ap_ssid"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Пароль:</td>
+                <td><input type="password" value="%WIFI_AP_PASS%" name="wifi_ap_pass"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Скрытая сеть:<br><span style="font-style: italic;">(не рекомендуется)</span></td>
+                <td><input type="checkbox" %STATUS_AP_HIDE% name="ap_hide" value="hide"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="set_up">
+            <h1>Сайт</h1>
+            <div class="line"></div>
+            <table>
+              <tr>
+                <td style="text-align: right;">Логин:</td>
+                <td><input type="text" value="%SITE_LOGIN%" name="site_login"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Пароль:</td>
+                <td><input type="password" value="%SITE_PASS%" name="site_pass"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Доменное имя:</td>
+                <td><input type="text" value="%MDNS_HOSTNAME%" name="mdns_hostname">.local</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="set_up">
+            <h1>Дом</h1>
+            <div class="line"></div>
+            <table>
+              <tr>
+                <td style="text-align: right;">Имя дома:</td>
+                <td><input type="text" value="%SITE_TITLE%" name="homename"></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;">Восстанавливать состояния устройств при возобновлении электропитания:</td>
+                <td><input type="checkbox" %STATUS_RESTORE% name="restore_states" value="restore"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="buttons">
+            <button type="submit" name="submit">Сохранить и Перезагрузить</button>
+          </div>
+        </form>
+
+
+        <div class="set_up devices_list">
+          <h1>Устройства</h1>
+          <div class="line"></div>
+          <table class="device_table">
+            <tr>
+              <th>Текущее имя</th>
+              <th>Изменить на</th>
+              <th>Тип устройства</th>
+            </tr>
+            <tr>
+              <td>Свет в комнате</td>
+              <td><input type="text" value="Свет в комнате"></td>
+              <td>
+                <select name="device_type">
+                  <option disabled>Выберите тип</option>
+                  <option selected value="Свет">Свет</option>
+                  <option value="Датчик влажности">Датчик влажности</option>
+                  <option value="Датчик температуры">Датчик температуры</option>
+                  <option value="RGB подсветка">RGB подсветка</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Свет в ванной</td>
+              <td><input type="text" value="Свет в ванной"></td>
+              <td>
+                <select name="device_type">
+                  <option disabled>Выберите тип</option>
+                  <option selected value="Свет">Свет</option>
+                  <option value="Датчик влажности">Датчик влажности</option>
+                  <option value="Датчик температуры">Датчик температуры</option>
+                  <option value="RGB подсветка">RGB подсветка</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Температура</td>
+              <td><input type="text" value="Температура"></td>
+              <td>
+                <select name="device_type">
+                  <option disabled>Выберите тип</option>
+                  <option value="Свет">Свет</option>
+                  <option value="Датчик влажности">Датчик влажности</option>
+                  <option selected value="Датчик температуры">Датчик температуры</option>
+                  <option value="RGB подсветка">RGB подсветка</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Влажность</td>
+              <td><input type="text" value="Влажность"></td>
+              <td>
+                <select name="device_type">
+                  <option disabled>Выберите тип</option>
+                  <option value="Свет">Свет</option>
+                  <option selected value="Датчик влажности">Датчик влажности</option>
+                  <option value="Датчик температуры">Датчик температуры</option>
+                  <option value="RGB подсветка">RGB подсветка</option>
+                </select>
+              </td>
+            </tr>
+
+            <tr>
+              <td>RGB Лента</td>
+              <td><input type="text" value="RGB Лента"></td>
+              <td>
+                <select name="device_type">
+                  <option disabled>Выберите тип</option>
+                  <option value="Свет">Свет</option>
+                  <option value="Датчик влажности">Датчик влажности</option>
+                  <option value="Датчик температуры">Датчик температуры</option>
+                  <option selected value="RGB подсветка">RGB подсветка</option>
+                </select>
+              </td>
+            </tr>
+
+          </table>
+
+          <div class="buttons">
+            <button>Сохранить</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

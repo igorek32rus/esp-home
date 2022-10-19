@@ -1,0 +1,10 @@
+STA_SSID: Wifi_Ssid
+STA_PASS: Password
+AP_SSID: AP_ssid
+AP_PASS: AP_password
+AP_HIDE: 1
+AP_mDNS: esp8266
+SITE_LOGIN: Site_Login
+SITE_PASS: Site_password
+TITLE: ESP-Home
+RESTORE_DEVICES_STATE: 1

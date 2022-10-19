@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#333333">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>%SITE_TITLE%</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      function changeStateRelay(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == "1") {
+              document.getElementById("light" + id).className = 'device_img lamp_on';
+              document.getElementById("status_light" + id).innerHTML = "Включен";
+            } else {
+              document.getElementById("light" + id).className = 'device_img lamp_off';
+              document.getElementById("status_light" + id).innerHTML = "Выключен";
+            }
+          }
+        };
+        xhttp.open("GET", "/controller?relay=" + id, true);
+        xhttp.send();
+      }
+
+      function changeStateRGB() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == "1") {
+              document.getElementById("status_rgb").innerHTML = "Включен";
+              document.getElementById("btn_rgb_state").innerHTML = "Выключить";
+            } else {
+              document.getElementById("status_rgb").innerHTML = "Выключен";
+              document.getElementById("btn_rgb_state").innerHTML = "Включить";
+            }
+          }
+        };
+        xhttp.open("GET", "/controller?rgb=changestate", true);
+        xhttp.send();
+      }
+
+      function changeColorRGB() {
+        colorR = document.getElementById("colorR").value;
+        colorG = document.getElementById("colorG").value;
+        colorB = document.getElementById("colorB").value;
+        var color = getColor();
+        //document.getElementById('color_picker').style.display='none';
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == "1") {
+              document.getElementById("status_rgb").innerHTML = "Включен";
+              document.getElementById("btn_rgb_state").innerHTML = "Выключить";
+              document.getElementById("rgb_box").style.boxShadow = "0px 0px 5px rgba(" + colorR + ", " + colorG + ", " + colorB + ", .7)";
+            } else {
+              document.getElementById("status_rgb").innerHTML = "Выключен";
+              document.getElementById("btn_rgb_state").innerHTML = "Включить";
+            }
+          }
+        };
+        xhttp.open("GET", "/controller?rgb=changecolor&color=" + color, true);
+        xhttp.send();
+      }
+
+      setInterval(function ( ) {
+        for (let i = 1; i <= 2; i++) {
+          var xhttp1 = new XMLHttpRequest();
+          xhttp1.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              if (this.responseText == "1") {
+                document.getElementById("light" + i).className = 'device_img lamp_on';
+                document.getElementById("status_light" + i).innerHTML = "Включен";
+              } else {
+                document.getElementById("light" + i).className = 'device_img lamp_off';
+                document.getElementById("status_light" + i).innerHTML = "Выключен";
+              }
+            }
+          };
+          xhttp1.open("GET", "/controller?staterelay=" + i, true);
+          xhttp1.send();
+        }
+      }, 2000 ) ;
+
+      setInterval(function ( ) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("status_temperature").innerHTML = this.responseText + " °C";
+          }
+        };
+        xhttp.open("GET", "/controller/temperature", true);
+        xhttp.send();
+      }, 2000 ) ;
+
+      setInterval(function ( ) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("status_humidity").innerHTML = this.responseText + " &#37;";
+          }
+        };
+        xhttp.open("GET", "/controller/humidity", true);
+        xhttp.send();
+      }, 2000 ) ;
+
+      function dec2hex(dec, metric)
+      {
+         var digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+         metric=!metric ? 16 : metric;
+         var hex='';
+         var tmp='';
+         while(dec!=0)
+         {
+             tmp=hex;
+             hex=digits.charAt(dec % metric)+tmp;
+             dec=Math.floor(dec / metric);
+         }
+         return hex;
+      }
+
+      function getColor() {
+        colorR = document.getElementById("colorR").value;
+        colorG = document.getElementById("colorG").value;
+        colorB = document.getElementById("colorB").value;
+
+        var hexR = "";
+        var hexG = "";
+        var hexB = "";
+
+        if (colorR < 16) {
+          hexR = "0" + dec2hex(colorR, 16);
+        } else {
+          hexR = "" + dec2hex(colorR, 16);
+        }
+
+        if (colorG < 16) {
+          hexG = "0" + dec2hex(colorG, 16);
+        } else {
+          hexG = "" + dec2hex(colorG, 16);
+        }
+
+        if (colorB < 16) {
+          hexB = "0" + dec2hex(colorB, 16);
+        } else {
+          hexB = "" + dec2hex(colorB, 16);
+        }
+
+        if (colorR == 0) {
+          hexR = "00";
+        }
+
+        if (colorG == 0) {
+          hexG = "00";
+        }
+
+        if (colorB == 0) {
+          hexB = "00";
+        }
+
+        var color = ""+ hexR + hexG + hexB;
+
+        return color;
+      }
+
+      function changeColor() {
+        var color = getColor();
+        color = "#" + color;
+
+        color_preview = document.getElementById("color_preview");
+        color_preview.style.backgroundColor = color;
+       }
+    </script>
+  </head>
+  <body>
+    <div class="color_picker" id="color_picker">
+      <h1>Выбор цвета</h1>
+      <div class="close" onclick="document.getElementById('color_picker').style.display='none'">
+        X
+      </div>
+      <div class="color_box">
+        <div class="left_box">
+          <div class="color_selector">
+            <div class="color_name">
+              Красный:
+            </div>
+            <div class="color_select">
+              <input type="range" oninput="changeColor()" id="colorR" min="0" max="255" step="1" value="0">
+            </div>
+          </div>
+          <div class="color_selector">
+            <div class="color_name">
+              Зелёный:
+            </div>
+            <div class="color_select">
+              <input type="range" oninput="changeColor()" id="colorG" min="0" max="255" step="1" value="0">
+            </div>
+          </div>
+          <div class="color_selector">
+            <div class="color_name">
+              Синий:
+            </div>
+            <div class="color_select">
+              <input type="range" oninput="changeColor()" id="colorB" min="0" max="255" step="1" value="0">
+            </div>
+          </div>
+        </div>
+        <div class="color_preview" id="color_preview"></div>
+      </div>
+      <button id="btn_rgb_state" class="btn_rgb_state" onclick="changeStateRGB()">Включить</button>
+      <button class="btn_rgb_change_color" onclick="changeColorRGB()">Принять</button>
+    </div>
+    <div class="header">
+      <a class="logo" href="/">
+        <div class="logo_img"></div>
+        <div class="logo_text">
+          %SITE_TITLE%
+        </div>
+      </a>
+      <div class="menu">
+        <a href="/settings">
+          <div class="settings_button"></div>
+        </a>
+        <a href="auth.html">
+          <div class="logout_button"></div>
+        </a>
+      </div>
+    </div>
+    <div class="content">
+      <div class="devices">
+        <a class="box" onclick="changeStateRelay(1)">
+          <!-- <div class="device_img lamp_off"></div> -->
+          <div id="light1" class="device_img %STYLE_LAMP1%"></div>
+          <div class="name">
+            Свет в комнате
+          </div>
+          <div id="status_light1" class="status">
+            %LIGHT1_STATUS%
+          </div>
+        </a>
+
+        <a class="box" onclick="changeStateRelay(2)">
+          <!-- <div class="device_img lamp_on"></div> -->
+          <div id="light2" class="device_img %STYLE_LAMP2%"></div>
+          <div class="name">
+            Свет в ванной
+          </div>
+          <div id="status_light2" class="status">
+            %LIGHT2_STATUS%
+          </div>
+        </a>
+
+        <a class="box" href="#">
+          <div class="device_img temperature"></div>
+          <div class="name">
+            Температура
+          </div>
+          <div id="status_temperature" class="status">
+            %TEMPERATURE% °C
+          </div>
+        </a>
+
+        <a class="box" href="#">
+          <div class="device_img humidity"></div>
+          <div class="name">
+            Влажность
+          </div>
+          <div id="status_humidity" class="status">
+            %HUMIDITY% &#37;
+          </div>
+        </a>
+
+        <a id="rgb_box" class="box" onclick="document.getElementById('color_picker').style.display='block'">
+          <div class="device_img rgb_strip"></div>
+          <div class="name">
+            RGB Лента
+          </div>
+          <div id="status_rgb" class="status">
+            %RGB_STATE%
+          </div>
+        </a>
+      </div>
+    </div>
+  </body>
+
+</html>
